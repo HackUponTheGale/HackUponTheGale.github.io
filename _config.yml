@@ -12,7 +12,7 @@ description:     ...not because they are easy, but because they are hard.
 keywords:         cybersecurity, dfir, information security, infosec, incident response, digital forensics, blue team, CISO
 language:         "en" # default language of the blog. Language codes: http://www.w3schools.com/tags/ref_language_codes.asp
 
-baseurl:          "/jekyllDecent" # the subpath of your site, e.g. /blog
+baseurl:          "/" # the subpath of your site, e.g. /blog
 url:              "" # the base hostname & protocol for your site. Have a look at robots.txt as well!
 permalink:        /blog/:categories/:title
 cover:            /assets/mountain-cover.jpg
