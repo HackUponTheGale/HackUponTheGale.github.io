@@ -6,6 +6,7 @@ keywords:  about person demo example
 title:     whoami /all
 menutitle: About
 weight:    90
+excerpt:   About me
 --- 
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
