@@ -1,6 +1,6 @@
 default:                                                      # Fallback if nothing is specified
   initial:      BSmith                                       # used for author lookup in posts and for first two characters in the about page back button
-  name:         "B Smith"                               # used to display author name
+  name:         "Brandon Smith | HackUponTheGale"                               # used to display author name
   cover:        /assets/bliss.jpg        # OPTIONAL: defines location of cover image in about page
   picture:      /assets/anvil.jpg                           # OPTIONAL: author picture
   bio:          About me                               # OPTIONAL: text below author name in posts
@@ -26,7 +26,7 @@ default:                                                      # Fallback if noth
   reddit:                                                     # OPTIONAL: used in the about page
 BSmith:
   initial:      BSmith
-  name:         "B Smith"       
+  name:         "Brandon Smith | HackUponTheGale"       
   cover:        /assets/bliss.jpg  
   picture:      /assets/anvil.jpg  
   bio:          About me
