@@ -1,7 +1,7 @@
 default:                                                      # Fallback if nothing is specified
   initial:      BSmith                                       # used for author lookup in posts and for first two characters in the about page back button
   name:         "B Smith"                               # used to display author name
-  cover:        /assets/mountain-alternative-cover.jpg        # OPTIONAL: defines location of cover image in about page
+  cover:        /assets/bliss.jpg        # OPTIONAL: defines location of cover image in about page
   picture:      /assets/johndoe.jpg                           # OPTIONAL: author picture
   bio:          About me                               # OPTIONAL: text below author name in posts
   location:     USA                                       # OPTIONAL: used to display location of the author
@@ -27,7 +27,7 @@ default:                                                      # Fallback if noth
 BSmith:
   initial:      BSmith
   name:         "B Smith"       
-  cover:        /assets/mountain-alternative-cover.jpg  
+  cover:        /assets/bliss.jpg  
   picture:      /assets/johndoe.jpg  
   bio:          About me
   location:     USA
