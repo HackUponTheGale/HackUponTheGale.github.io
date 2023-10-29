@@ -15,8 +15,8 @@ language:         "en" # default language of the blog. Language codes: http://ww
 baseurl:          "/" # the subpath of your site, e.g. /blog
 url:              "https://hackuponthegale.github.io" # the base hostname & protocol for your site. Have a look at robots.txt as well!
 permalink:        /blog/:categories/:title
-cover:            /assets/mountain-cover.jpg
-disqus_shortname: "jekylldecent"
+cover:            /assets/bliss.jpg
+disqus_shortname: "hackuponthegale"
 
 # Build settings
 sass:
