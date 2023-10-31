@@ -16,7 +16,7 @@ It's also potentially of great value to attackers. And it ain't exactly easy to 
 Quick Assist is enabled by default on all standard Windows deployments. Feel free to read that again. 
 To use it, the remote party (**client** for our purposes-- the one who will be viewing/controlling the other device) opens quickassist.exe from her device. She clicks "Help someone," logs in with an arbitrary Microsoft account, and is given a 6-character code to provide to the target. This target (**server** here-- the one whose device will be viewed/controlled) enters the 6-character code, clicks allow, and the screen is shared. From there, the client can request full control of the device.
 
-![](/media/img/QuickAssist1/QuickAssistLanding1.PNG "Initial landing page" | width=300) ![](/media/img/QuickAssist1/QuickAssistLanding2.PNG "Help someone page" | width=300)
+<img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="300"> <img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="300">
 
 <div id="image-table" alight="center">
     <table>
@@ -46,6 +46,8 @@ In this case, I think we can hope that our user is wise enough for this to appea
 Scenario 2: A stranger-- also claiming to be from IT-- rings your user and gives the same line about a security issue. But this time, our stranger claims that the user won't need to download anything, because IT has already placed the requisite program on her device. Instead, all she has to do is press Windows+CTRL+Q. From there, our stranger reads off a six digit code to be entered by the user, and a session is underway. 
 
 With this second scenario, the attacker has undermined quite a few elements that could cause suspicion, and has a shot at gaining access to the device using what amounts to a LOLBAS RAT. She can pop open a Powershell window, download cradle a second stage, and be off to the races. 
+
+If you're social engineering for access with any other tool, why?
 
 ## Challenges for Monitoring, Detecting, and Investigating
 
