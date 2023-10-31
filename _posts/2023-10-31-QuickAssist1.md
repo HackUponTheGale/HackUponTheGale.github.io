@@ -89,3 +89,13 @@ A particularly useful value is at https://remoteassistance.support.services.micr
 ![](/media/img/QuickAssist1/historyDB.PNG)
 
 Other files are created in the same subdirectory of the user's AppData folder, and their timestamps reveal further information.
+
+A large number of subdirectories and files within the corresponding Quick Assist folder are not created until the application's first session. The **%LOCALAPPDATA%\Temp\QuickAssist\EBWebView\Default\Secure Preferences** database is not created upon launch of quickassist.exe, but its creation date reflects the instantiation of the first session joined by the host. 
+
+"%LOCALAPPDATA%\Temp\QuickAssist\EBWebView\Default\Network Action Predictor" changes upon session establishment, so its Date Modified represents the beginning of the most recent screenshare session.
+
+"%LOCALAPPDATA%\Temp\QuickAssist\EBWebView\Default\Network\DIPS" is updated on session state change (i.e. session started, control granted, control relinquished, session closed). This means that its Date Modified represents the END of the most recent screenshare session.
+
+Taken together, these artifacts present a useful volume of information that can be taken as the starting point for further analysis. 
+
+In a future blog post, I'll do some further digging into accessing other, encrypted databases, and how to better discern directionality of connections.
