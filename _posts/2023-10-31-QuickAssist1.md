@@ -40,7 +40,7 @@ If you're social engineering for access with any other tool, why?
 
 Quick Assist presents a slew of problems for those who have a need to keep an eye on it. 
 
-First of all, it's hard spot a connection in network logs. When quickassist.exe is launched, it immediately loads multiple msedgewebview2 processes and resolves remoteassistance.support.services.microsoft.com to load the landing screen shown above. So not every Quick Assist launch-- or even every DNS request by Quick Assist-- is indicative of a sharing session. Plus, session creation does not involve the creation of any new child processes, or even additional module loads. Even the call to the Win32 screenshot API is performed on initial launch.
+First of all, it's hard spot a connection in network logs. When quickassist.exe is launched, it immediately loads multiple msedgewebview2 processes and resolves remoteassistance.support.services.microsoft.com to load the landing screen shown above. So not every Quick Assist launch-- or even every DNS request by Quick Assist-- is indicative of a sharing session. Plus, session creation does not involve the creation of any new child processes, or even additional module loads. Even the call to the Win32 screenshot API is performed on initial launch. As with a normal RDP session, process launches in a remote control session aren't attributed to quickassist.exe.
 
 You're also probably not even logging the DNS activity associated with a connection at the host level. The widely-used SwiftOnSecurity configuration for Sysmon saves storage by suppressing logging for some extremely well-traveled domains, among which is every subdomain of microsoft.com. This means that the entire infrastructure used for session establishment is suppressed.
 
@@ -53,18 +53,21 @@ Finally, a network layer block to lock down usage of this tool isn't straightfor
 # The DFIR of it all
 
 ## Detecting Usage
-From a network and logging level, you've still got a couple of opportunities to detect Quick Assist sharing activity. 
+We've still got a couple of opportunities to detect remote sharing or control activity, through both networking and log data. 
 
-Text text text text
+From a DNS perspective, the operative moment occurs at step 5 of the diagram above. When a host connects to the Microsoft RDP relay service on port 443, it issues a DNS request for a region-specific domain matching the pattern **rdprelayv3*.support.services.microsoft.com** (e.g. rdprelayv3eastusprod-4.support.services.microsoft.com). This occurs regardless of whether the host is entering the session as the client or the server, but is high-fidelity confirmation that at a minimum, a screen share session has occurred. 
 
-```python
-import pty;
-pty.spawn("/bin/bash")
+Absent network-wide DNS logs, this is captured beautifully in Microsoft Defender for Endpoints:
+
+```kusto
+DeviceNetworkEvents | where RemoteUrl contains "rdprelayv*" and InitiatingProcessCommandLine contains "quickassist"
 ```
 
-#### Yeah but what about a picture? (h4)
-<figure>
-   <img src="{{ "/assets/bliss.jpg" | absolute_url }}" />
-   <figcaption>A nice field</figcaption>
-</figure>
+If you have certain policies enabled in Windows Advanced Audit Policy Configuration, you're in an even better position. Windows logs certain Ncrypt/DPAPI events in Security logs and an event code 5058 is generated when an operation is performed on a file containing a key by using a Windows key storage provider. For our purposes, such an event occurs at the start of any successful connection. These events can be identified with the following: 
 
+`index = [Windows Event Logs] EventCode=5058 ProcessName="*quickassist.exe" KeyName="Desktop Sharing"`
+
+Note that these events are only logged on the **server side** -- the side being viewed/controlled-- making them particularly useful. A series of related events are logged at the beginning of a session, but in many cases it can be fruitful to use the ProcessID from these events to correlate with Sysmon 5 or Security 4689 events in order to temporally bracket the session.
+
+## Forensic Review
+Despite the lack of native logging, Quick Assist presents a solid quantity of forensic material to work with. 
