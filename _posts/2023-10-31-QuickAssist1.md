@@ -4,7 +4,7 @@ title:             "Investigating Microsoft Quick Assist"
 menutitle:         "Microsoft Quick Assist"
 category:          DFIR
 author:            BSmith
-tags:              DFIR, Windows, Remote Access, Incident Response
+tags:              DFIR, Windows, Remote Access, IncidentResponse
 ---
 
 Quick Assist is Microsoft's native remote access solution for tunneling a desktop connection across the internet. It enables a user to troubleshoot printer issues for family members from the comfort of their home. And it's potentially of great value to attackers. 
@@ -15,8 +15,8 @@ Quick Assist is enabled by default on all standard Windows deployments. Feel fre
 To use it, the remote party (**client** for our purposes-- the one who will be viewing/controlling the other device) opens quickassist.exe from her device. She clicks "Help someone," logs in with an arbitrary Microsoft account, and is given a 6-character code to provide to the target. This target (**server** here-- the one whose device will be viewed/controlled) enters the 6-character code, clicks allow, and the screen is shared. From there, the client can request full control of the device.
 
 <p float="center">
-  <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="50%" />
-  <img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="50%" />
+  <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="50%x" />
+  <img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="50%x" />
 </p>
 
 ## External threat scenario
