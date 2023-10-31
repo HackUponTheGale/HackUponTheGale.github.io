@@ -16,18 +16,20 @@ It's also potentially of great value to attackers. And it ain't exactly easy to 
 Quick Assist is enabled by default on all standard Windows deployments. Feel free to read that again. 
 To use it, the remote party (**client** for our purposes-- the one who will be viewing/controlling the other device) opens quickassist.exe from her device. She clicks "Help someone," logs in with an arbitrary Microsoft account, and is given a 6-character code to provide to the target. This target (**server** here-- the one whose device will be viewed/controlled) enters the 6-character code, clicks allow, and the screen is shared. From there, the client can request full control of the device.
 
-<div id="image-table">
-    <table>
-	    <tr>
-    	    <td style="padding:10px">
-        	    <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="300"/>
-      	    </td>
+<p align="center">
+   <div id="image-table">
+      <table>
+         <tr>
             <td style="padding:10px">
-            	<img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="300"/>
-            </td>
-        </tr>
-    </table>
-</div>
+               <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="300"/>
+               </td>
+               <td style="padding:10px">
+                  <img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="300"/>
+               </td>
+         </tr>
+      </table>
+   </div>
+</p>
 
 The TL;DR on Quick Assist is that it uses HTTPS over Microsoft domains to establish an RDP session between hosts. It's described in better detail [by Microsoft](https://learn.microsoft.com/en-us/windows/client-management/client-tools/quick-assist). 
 
@@ -57,9 +59,9 @@ You're also probably not even logging the DNS activity associated with a connect
 
 If asked to pick something that would not create event logs, this would not have been my choice. But there's no event log created by this tool to reflect any stage of session establishment, remote control, or session termination. Application/services logs do contain a Remote Assistance/Operational evtx events, but these seem to be related to components of the legacy Remote Assistance tool. Events there that pertain to Remote Assistance COM server do not correspond with Quick Assist usage. 
 
-Finally, a network layer block to lock down usage of this tool isn't straightforward. It's all in Microsoft IP space. Moreover, the DNS requests used to set up a session return a series of CNAME records before finally resolving an IP. That means outside of sinkhole-ing specific requests, a host-side control is the best option.
+Finally, a network layer block to lock down usage of this tool isn't straightforward. It's all in Microsoft IP space. Moreover, the DNS requests used to set up a session return a series of CNAME records before finally resolving an IP. That means outside of sinkholing specific requests, a host-side control is the best option.
 
-## Does python work? (h2)
+## Investigating
 
 Text text text text
 
