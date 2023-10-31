@@ -16,10 +16,22 @@ It's also potentially of great value to attackers. And it ain't exactly easy to 
 Quick Assist is enabled by default on all standard Windows deployments. Feel free to read that again. 
 To use it, the remote party (**client** for our purposes-- the one who will be viewing/controlling the other device) opens quickassist.exe from her device. She clicks "Help someone," logs in with an arbitrary Microsoft account, and is given a 6-character code to provide to the target. This target (**server** here-- the one whose device will be viewed/controlled) enters the 6-character code, clicks allow, and the screen is shared. From there, the client can request full control of the device.
 
-<p float="center">
-  <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="46%" />
-  <img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="46%" />
-</p>
+<div id="image-table">
+    <table>
+	    <tr>
+    	    <td style="padding:10px">
+        	    <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="300"/>
+      	    </td>
+            <td style="padding:10px">
+            	<img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="300"/>
+            </td>
+        </tr>
+    </table>
+</div>
+
+The TL;DR on Quick Assist is that it uses HTTPS over Microsoft domains to establish an RDP session between hosts. It's described in better detail [by Microsoft](https://learn.microsoft.com/en-us/windows/client-management/client-tools/quick-assist). 
+
+![](/media/img/QuickAssist1/quickassistflow.png)
 
 ## External threat scenario
 
@@ -33,9 +45,19 @@ Scenario 2: A stranger-- also claiming to be from IT-- rings your user and gives
 
 With this second scenario, the attacker has undermined quite a few elements that could cause suspicion, and has a shot at gaining access to the device using what amounts to a LOLBAS RAT. She can pop open a Powershell window, download cradle a second stage, and be off to the races. 
 
-## This does something bold! (h2)
+## Challenges for Monitoring, Detecting, and Investigating
 
-And then we can keep on truckin'
+Quick Assist presents a slew of problems for those who have a need to keep an eye on it. 
+
+First of all, it's hard spot a connection in network logs. When quickassist.exe is launched, it immediately loads multiple msedgewebview2 processes and resolves remoteassistance.support.services.microsoft.com to load the landing screen shown above. So not every Quick Assist launch-- or even every DNS request by Quick Assist-- is indicative of a sharing session. Plus, session creation does not involve the creation of any new child processes, or even additional module loads. Even the call to the Win32 screenshot API is performed on initial launch.
+
+You're also probably not even logging the DNS activity associated with a connection at the host level. The widely-used SwiftOnSecurity configuration for Sysmon saves storage by suppressing logging for some extremely well-traveled domains, among which is every subdomain of microsoft.com. This means that the entire infrastructure used for session establishment is suppressed.
+
+![](/media/img/QuickAssist1/SysmonConfig.PNG)
+
+If asked to pick something that would not create event logs, this would not have been my choice. But there's no event log created by this tool to reflect any stage of session establishment, remote control, or session termination. Application/services logs do contain a Remote Assistance/Operational evtx events, but these seem to be related to components of the legacy Remote Assistance tool. Events there that pertain to Remote Assistance COM server do not correspond with Quick Assist usage. 
+
+Finally, a network layer block to lock down usage of this tool isn't straightforward. It's all in Microsoft IP space. Moreover, the DNS requests used to set up a session return a series of CNAME records before finally resolving an IP. That means outside of sinkhole-ing specific requests, a host-side control is the best option.
 
 ## Does python work? (h2)
 
