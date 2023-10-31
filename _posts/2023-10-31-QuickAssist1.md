@@ -16,6 +16,8 @@ It's also potentially of great value to attackers. And it ain't exactly easy to 
 Quick Assist is enabled by default on all standard Windows deployments. Feel free to read that again. 
 To use it, the remote party (**client** for our purposes-- the one who will be viewing/controlling the other device) opens quickassist.exe from her device. She clicks "Help someone," logs in with an arbitrary Microsoft account, and is given a 6-character code to provide to the target. This target (**server** here-- the one whose device will be viewed/controlled) enters the 6-character code, clicks allow, and the screen is shared. From there, the client can request full control of the device.
 
+![](/media/img/QuickAssist1/QuickAssistLanding1.PNG "Initial landing page" | width=300) ![](/media/img/QuickAssist1/QuickAssistLanding2.PNG "Help someone page" | width=300)
+
 <div id="image-table" alight="center">
     <table>
 	    <tr>
