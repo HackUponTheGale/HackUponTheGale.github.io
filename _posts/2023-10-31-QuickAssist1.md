@@ -22,10 +22,10 @@ To use it, the remote party (**client** for our purposes-- the one who will be v
     <table>
 	    <tr>
     	    <td style="padding:10px">
-        	    <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="300"/>
+        	    <img src="/media/img/QuickAssist1/QuickAssistLanding1.PNG" width="25%" height="auto"/>
       	    </td>
             <td style="padding:10px">
-            	<img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="300"/>
+            	<img src="/media/img/QuickAssist1/QuickAssistLanding2.PNG" width="25%" height="auto"/>
             </td>
         </tr>
     </table>
@@ -63,7 +63,10 @@ If asked to pick something that would not create event logs, this would not have
 
 Finally, a network layer block to lock down usage of this tool isn't straightforward. It's all in Microsoft IP space. Moreover, the DNS requests used to set up a session return a series of CNAME records before finally resolving an IP. That means outside of sinkholing specific requests, a host-side control is the best option.
 
-## Investigating
+# The DFIR of it all
+
+## Detecting Usage
+From a network and logging level, you've still got a couple of opportunities to detect Quick Assist sharing activity. 
 
 Text text text text
 
