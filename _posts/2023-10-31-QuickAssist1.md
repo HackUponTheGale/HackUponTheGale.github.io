@@ -67,7 +67,25 @@ If you have certain policies enabled in Windows Advanced Audit Policy Configurat
 
 `index = [Windows Event Logs] EventCode=5058 ProcessName="*quickassist.exe" KeyName="Desktop Sharing"`
 
-Note that these events are only logged on the **server side** -- the side being viewed/controlled-- making them particularly useful. A series of related events are logged at the beginning of a session, but in many cases it can be fruitful to use the ProcessID from these events to correlate with Sysmon 5 or Security 4689 events in order to temporally bracket the session.
+Note that these events are only logged on the **server side** -- the side being viewed/controlled-- making them particularly useful as an indicator of which side our subject host was on. A series of related events are logged at the beginning of a session, but in many cases it can be fruitful to use the ProcessID from these events to correlate with Sysmon 5 or Security 4689 events in order to temporally bracket the session.
 
 ## Forensic Review
 Despite the lack of native logging, Quick Assist presents a solid quantity of forensic material to work with. 
+
+Naturally, the SRUM database (C:\System32\sru\SRUDB.dat) will provide useful context for connections in the last 60ish days. When parsed (with a tool like [SrumECmd.exe](https://github.com/EricZimmerman/Srum)), .csv rows for quickassist.exe will show the volume of network traffic in and out via the tool. If volume of data out > volume of data in, we can safely conclude that the forensic subject was the **server**, sharing their screen and potentially granting remote access. If volume of data out < volume of data in, then the subject was acting as the **client** in a remote connection. 
+
+The overall volume of data can also be telling. While the server does stream its screen live, it does so with native Windows RDP efficiencies. In some testing, I found that my host (in a server role) streamed a little over 25 MB of data in about 10 minutes of low-activity session.
+
+And speaking of those RDP efficiencies, also look for evidence in the subject's RDP bitmap cache (C:\Users\<User>\AppData\Local\Microsoft\Terminal Server Client\Cache). Because a screenshare session through Quick Assist is a real life RDP connection, a bitmap cache binary file is created on the client host, with a modification time that matches the cessation of the last session. An absence of such a cache file suggests that the subject was on the server side of the connection (note, however, that the cache can be cleared by the user trivially). Bonus: parse the cache with a utility like [bmc-tools.py](https://github.com/ANSSI-FR/bmc-tools) for a jigsaw puzzle that will give you a sense of what she was looking at.
+
+Next, Quick Assist is kind enough to produce some artifacts in the AppData/Temp directory that are quite useful, and that it does not clean up expeditiously. The most significant is a series of SQLite databases housed at **%LOCALAPPDATA%\Temp\QuickAssist\EBWebView\Default**. While several are encrypted with string protected through DPAPI (the subject of a future post), the most important artifact is the database at **%LOCALAPPDATA%\Temp\QuickAssist\EBWebView\Default\history**. This database is unencrypted, and used to track historic sessions. Any SQLite browser can be used to view the "urls" table in the file. This table contains web hits by the tool during session negotiation and activity, including URLs, hit counts, and most-recent timestamps. 
+
+The row for https://remoteassistance.support.services.microsoft.com/screenshare is a means to track how many sessions the host has been part of. Its timestamp (expressed in Windows NT time format) shows the time the most recent session was joined.
+
+The entry for https://remoteassistance.support.services.microsoft.com/status/ended reflects the end of a session. Its count will match the above, but its timestamp will show the end of the most recent session, allowing for accurate time bracketing. 
+
+A particularly useful value is at https://remoteassistance.support.services.microsoft.com/roleselection# (distinct from /roleselection with no #, and also distinct from /roleselection#argument1234567890...). The visit count for this row was observed to increment on the server host only during sessions when the client was given control via the Quick Assist session. Its timestamp reflects the most recent time when a remote entity was given control during a session.
+
+![](/media/img/QuickAssist1/historyDB.PNG)
+
+Other files are created in the same subdirectory of the user's AppData folder, and their timestamps reveal further information.
