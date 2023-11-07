@@ -96,6 +96,10 @@ A large number of subdirectories and files within the corresponding Quick Assist
 
 "%LOCALAPPDATA%\Temp\QuickAssist\EBWebView\Default\Network\DIPS" is updated on session state change (i.e. session started, control granted, control relinquished, session closed). This means that its Date Modified represents the END of the most recent screenshare session.
 
+And quite notably, a .txt file (e.g. 000003.txt) is created within "%LOCALAPPDATA%\Temp\QuickAssist\EBWebView\Default\Session Storage". It contains the remoteassistance (truncated) resolved during session establishment, but more importantly, a list of session establishment dates/times in human-readable format.
+
 Taken together, these artifacts present a useful volume of information that can be taken as the starting point for further analysis. 
 
 In a future blog post, I'll do some further digging into accessing other, encrypted databases, and how to better discern directionality of connections.
+
+UPDATE: After confirming that databases can be decrypted via a script to retrieve keys through the DPAPI, I found nothing of substantial, incremental value in these databases.
