@@ -42,7 +42,7 @@ Quick Assist presents a slew of problems for those who have a need to keep an ey
 
 First of all, it's hard spot a connection in network logs. When quickassist.exe is launched, it immediately loads multiple msedgewebview2 processes and resolves remoteassistance.support.services.microsoft.com to load the landing screen shown above. So not every Quick Assist launch-- or even every DNS request by Quick Assist-- is indicative of a sharing session. Plus, session creation does not involve the creation of any new child processes, or even additional module loads. Even the call to the Win32 screenshot API is performed on initial launch. As with a normal RDP session, process launches in a remote control session aren't attributed to quickassist.exe.
 
-You're also probably not even logging the DNS activity associated with a connection at the host level. The widely-used SwiftOnSecurity configuration for Sysmon saves storage by suppressing logging for some extremely well-traveled domains, among which is every subdomain of microsoft.com. This means that the entire infrastructure used for session establishment is suppressed.
+You're also probably not even logging the DNS activity associated with a connection at the host level. The widely-used SwiftOnSecurity configuration for Sysmon saves on storage by suppressing logging for some extremely well-traveled domains, among which is every subdomain of microsoft.com. This means that the entire infrastructure used for session establishment is suppressed.
 
 ![](/media/img/QuickAssist1/SysmonConfig.PNG)
 
