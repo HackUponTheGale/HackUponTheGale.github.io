@@ -102,4 +102,4 @@ Taken together, these artifacts present a useful volume of information that can 
 
 In a future blog post, I'll do some further digging into accessing other, encrypted databases, and how to better discern directionality of connections.
 
-UPDATE: After confirming that databases can be decrypted via a script to retrieve keys through the DPAPI, I found nothing of substantial, incremental value in these databases.
+UPDATE: After confirming that databases can be decrypted via a script to retrieve keys through the DPAPI, I found nothing of substantial, incremental value in these databases. The SRUM DB continues to be the most reliable way to ascertain directionality.
