@@ -66,4 +66,4 @@ DeviceNetworkEvents
 ```
 ## A word on InitiatingProcessUniqueID
 
-As of the time of this writing, the InitiatingProcessUniqueID field in MDE is not actually globally unique. In fact, it's not particularly close, and collisions happen frequently (clearly factors like the device's DNS name aren't part of whatever seed value is used to generate that identifier). I haven't seen  
+As of the time of this writing, the InitiatingProcessUniqueID field in MDE is not actually globally unique. In fact, it's not particularly close, and collisions happen frequently (clearly factors like the device's DNS name aren't part of whatever seed value is used to generate that identifier). I haven't seen collisions happen between processes on a single device within the span of 30 days, though, so when performing a join against two tables, the inclusion of both the unique ID and the device name in the join statement achieves the desired effect.
