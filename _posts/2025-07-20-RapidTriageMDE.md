@@ -16,7 +16,7 @@ This is a quick post with some observations on useful KQL logic for MDE Advanced
 Check for what other network connections were made by a malware sample. This can be useful to identify lateral movement via SSH, SMB, RDP, etc., and can be done either by looking at an executable image or by pivoting on known C2 URLs.
 
 Executable image:
-```
+```kusto
 //Take the module of a known bad DLL to look up what specific process/instance loaded it
 DeviceImageLoadEvents 
 | where SHA1 == "<hash of malicious DLL>"
@@ -28,7 +28,7 @@ DeviceImageLoadEvents
 ```
 
 Known C2 domains:
-```
+```kusto
 //Take the specific process that communicated with a known-bad C2 domain and 
 DeviceNetworkEvents 
 | where RemoteUrl in ("<evildomain.com>", "<definitelyC2.net>", "<badguys.xyz>")
@@ -41,7 +41,7 @@ DeviceNetworkEvents
 
 ## Files accessed/modified/created
 
-```
+```kusto
 //Take the module of a known bad DLL to look up what specific process/instance loaded it
 DeviceImageLoadEvents 
 | where SHA1 == "<hash of malicious DLL>"
@@ -56,7 +56,7 @@ DeviceImageLoadEvents
 
 This one is courtesy of my guy Glass (https://jon.glass) and inspired a lot of thinking. It takes the resolved IP(s) of known malicious domains and checks for other traffic to those IP addresses. This is quite useful if an adversary has re-used a component of its infrastructure and ends up wih multiple malicious samples phoning out to the same IP via different FQDNs. 
 
-```
+```kusto
 //Pull the remote IP of known malicious domains from network traffic
 DeviceNetworkEvents
 | where RemoteUrl in ("<evildomain.com>", "<definitelyC2.net>", "<badguys.xyz>")
