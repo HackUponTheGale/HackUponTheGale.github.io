@@ -17,35 +17,38 @@ Check for what other network connections were made by a malware sample. This can
 
 Executable image:
 ```
-#Take the module of a known bad DLL to look up what specific process/instance loaded it
-DeviceImageLoadEvents where SHA1 == "<hash of malicious DLL>"
+//Take the module of a known bad DLL to look up what specific process/instance loaded it
+DeviceImageLoadEvents 
+| where SHA1 == "<hash of malicious DLL>"
 | project DeviceName, InitiatingProcessUniqueId
-#Look up that specific process in network events
+//Look up that specific process in network events
 | join DeviceNetworkEvents on InitiatingProcessUniqueId, DeviceName
-#Optionally, remove HTTP/S 
+//Optionally, remove HTTP/S 
 | where not (RemotePort in (80, 443, 8080))
 ```
 
 Known C2 domains:
 ```
-#Take the specific process that communicated with a known-bad C2 domain and 
-DeviceNetwork Events where RemoteUrl in ("<evildomain.com>", "<definitelyC2.net>", "<badguys.xyz>")
+//Take the specific process that communicated with a known-bad C2 domain and 
+DeviceNetworkEvents 
+| where RemoteUrl in ("<evildomain.com>", "<definitelyC2.net>", "<badguys.xyz>")
 | project DeviceName, InitiatingProcessUniqueId
-#Join back to network events to ask "what are ALL of the URLs logged by that process?"
+//Join back to network events to ask "what are ALL of the URLs logged by that process?"
 | join DeviceNetworkEvents on InitiatingProcessUniqueId, DeviceName
-#Optionally, remove HTTP/S 
+//Optionally, remove HTTP/S 
 | where not (RemotePort in (80, 443, 8080))
 ```
 
 ## Files accessed/modified/created
 
 ```
-#Take the module of a known bad DLL to look up what specific process/instance loaded it
-DeviceImageLoadEvents where SHA1 == "<hash of malicious DLL>"
+//Take the module of a known bad DLL to look up what specific process/instance loaded it
+DeviceImageLoadEvents 
+| where SHA1 == "<hash of malicious DLL>"
 | project DeviceName, InitiatingProcessUniqueId
-#Join to file events to see its activity
+//Join to file events to see its activity
 | join DeviceFileEvents on DeviceName, InitiatingProcessUniqueId
-#Optionally, focus on the read events
+//Optionally, focus on the read events
 | where ActionType contains "Accessed" 
 ```
 
@@ -54,10 +57,11 @@ DeviceImageLoadEvents where SHA1 == "<hash of malicious DLL>"
 This one is courtesy of my guy Glass (https://jon.glass) and inspired a lot of thinking. It takes the resolved IP(s) of known malicious domains and checks for other traffic to those IP addresses. This is quite useful if an adversary has re-used a component of its infrastructure and ends up wih multiple malicious samples phoning out to the same IP via different FQDNs. 
 
 ```
-#Pull the remote IP of known malicious domains from network traffic
-DeviceNetworkEvents where RemoteUrl in ("<evildomain.com>", "<definitelyC2.net>", "<badguys.xyz>")
+//Pull the remote IP of known malicious domains from network traffic
+DeviceNetworkEvents
+| where RemoteUrl in ("<evildomain.com>", "<definitelyC2.net>", "<badguys.xyz>")
 | project RemoteIp
-# Join back on network events to check for domains that have a matching IP
+//Join back on network events to check for domains that have a matching IP
 | join DeviceNetworkEvents on RemoteIp
 ```
 ## A word on InitiatingProcessUniqueID
